@@ -13,11 +13,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-  - run: |
+  - name: "Download and Extract RPI Image"
+    run: |
       wget ${{ inputs.image }}
       unxz "$(basename ${{ inputs.image }})"
     shell: bash
-  - run: |
+  - name: "Mount Second Partition Image as Loopback"
+    run: |
       mkdir ${{ inputs.location }}
-      sudo mount $(losetup -Pr --show -f $(basename ${{ inputs.image }} .xy))p2 ${{ inputs.location }}
+      sudo mount $(losetup -Pr --show -f $(basename ${{ inputs.image }} .xz))p2 ${{ inputs.location }}
     shell: bash
