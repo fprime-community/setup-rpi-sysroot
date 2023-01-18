@@ -19,5 +19,6 @@ runs:
       unxz "$(basename ${{ inputs.image }})"
     shell: bash
   - run: |
+      mkdir ${{ inputs.location }}
       sudo mount $(losetup -Pr --show -f $(basename ${{ inputs.image }} .xy))p2 ${{ inputs.location }}
     shell: bash
