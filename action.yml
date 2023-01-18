@@ -14,7 +14,6 @@ runs:
   using: "composite"
   steps:
   - run: |
-      cd ${{ inputs.location }}
       wget ${{ inputs.image }}
       unxz "$(basename ${{ inputs.image }})"
     shell: bash
