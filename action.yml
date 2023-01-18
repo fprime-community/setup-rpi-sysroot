@@ -5,7 +5,7 @@ inputs:
   location:
     description: "Directory to place sysroot within"
     required: true
-    default: $GITHUB_WORKSPACE/rpi-sysroot
+    default: /tmp/rpi-sysroot
   image:
     description: "Image to download"
     required: true
