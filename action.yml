@@ -15,7 +15,7 @@ runs:
   steps:
   - name: "Download and Extract RPI Image"
     run: |
-      wget ${{ inputs.image }}
+      wget -q ${{ inputs.image }}
       unxz "$(basename ${{ inputs.image }})"
     shell: bash
   - name: "Mount Second Partition Image as Loopback"
