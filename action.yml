@@ -24,3 +24,7 @@ runs:
       LOOP_BACK_DEVICE="$(sudo losetup -Pr --show -f $(basename ${{ inputs.image }} .xz))"
       sudo mount "${LOOP_BACK_DEVICE}p2" "${{ inputs.location }}"
     shell: bash
+  - name: "List SYSROOT Contents"
+    run: |
+      ls "${{ inputs.location }}"
+    shell: bash
