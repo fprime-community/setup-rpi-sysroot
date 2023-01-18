@@ -1,0 +1,23 @@
+name: 'fprime-setup-rpi-sysroot'
+description: 'Setup RPI sysroot for use with F´'
+author: 'F´'
+inputs:
+  location:
+    description: "Directory to place sysroot within"
+    required: true
+    default: $GITHUB_WORKSPACE/rpi-sysroot
+  image:
+    description: "Image to download"
+    required: true
+    default: "https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2022-09-26/2022-09-22-raspios-bullseye-armhf-lite.img.xz"
+runs:
+  using: "composite"
+  steps:
+  - run: |
+      cd ${{ inputs.location }}
+      wget ${{ inputs.image }}
+      unxz "$(basename ${{ inputs.image }})"
+    shell: bash
+  - run: |
+      sudo mount $(losetup -Pr --show -f $(basename ${{ inputs.image }} .xy))p2 ${{ inputs.location }}
+    shell: bash
