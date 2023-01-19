@@ -21,7 +21,8 @@ runs:
   - name: "Download and Extract to RPI_TOOLCHAIN_DIR"
     run: |
       mkdir -p ${RPI_TOOLCHAIN_DIR} 
-      wget -qO- ${{ inputs.toolchain }} | tar -xf - -C ${RPI_TOOLCHAIN_DIR} --strip-components 1
+      wget -q ${{ inputs.toolchain }}
+      tar -xf $(basename ${{ inputs.toolchain}}) -C ${RPI_TOOLCHAIN_DIR} --strip-components 1
     shell: bash
   - name: "Download and Extract SYSROOT Image as XZ"
     if: ${{ inputs.sysrootImage != '' }}
