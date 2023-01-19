@@ -21,18 +21,18 @@ runs:
   - name: "Download and Extract to RPI_TOOLCHAIN_DIR"
     run: |
       mkdir -p ${RPI_TOOLCHAIN_DIR} 
-      wget -qO- ${{ inputs.toolchain } | tar -xf -C ${RPI_TOOLCHAIN_DIR} --strip-components 1
+      wget -qO- ${{ inputs.toolchain }} | tar -xf -C ${RPI_TOOLCHAIN_DIR} --strip-components 1
     shell: bash
   - name: "Download and Extract SYSROOT Image as XZ"
     if: ${{ inputs.sysroot-image != "" }}
     run: |
-      wget -qO- ${{ inputs.image }}
-      unxz "$(basename ${{ inputs.image }})"
+      wget -qO- ${{ inputs.sysroot-image }}
+      unxz "$(basename ${{ inputs.sysroot-image }})"
     shell: bash
   - name: "Mount Second Partition Image as Loopback"
     if: ${{ inputs.sysroot-image != "" }}
     run: |
-      mkdir ${{ inputs.location }}
-      LOOP_BACK_DEVICE="$(sudo losetup -Pr --show -f $(basename ${{ inputs.image }} .xz))"
-      sudo mount "${LOOP_BACK_DEVICE}p2" "${{ inputs.location }}"
+      mkdir ${{ inputs.sysroot-location }}
+      LOOP_BACK_DEVICE="$(sudo losetup -Pr --show -f $(basename ${{ inputs.sysroot-image }} .xz))"
+      sudo mount "${LOOP_BACK_DEVICE}p2" "${{ inputs.sysroot-location }}"
     shell: bash
