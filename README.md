@@ -5,11 +5,11 @@ optionally loopback the supplied sysroot image such that it may be used.
 
 ## Inputs
 
-| input            | default                                          | description                |
-|------------------|--------------------------------------------------|----------------------------|
-| toolchain        | Linaro GCC for ARM GNU/Linux 32bin w/ Hard Float | Toolchain To Download      |
-| sysroot-image    | **unused**                                       | SYSROOT Image to download  |
-| sysroot-location | `/tmp/rpi-sysroot`                               | Directory to place sysroot |
+| input           | default                                          | description                |
+|-----------------|--------------------------------------------------|----------------------------|
+| toolchain       | Linaro GCC for ARM GNU/Linux 32bin w/ Hard Float | Toolchain To Download      |
+| sysrootImage    | **unused**                                       | SYSROOT Image to download  |
+| sysrootLocation | `/tmp/rpi-sysroot`                               | Directory to place sysroot |
 
 ## Linaro Toolchain
 

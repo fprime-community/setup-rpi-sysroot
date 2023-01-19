@@ -7,11 +7,11 @@ inputs:
     required: true
     # Linaro 7.5 is Reliable for RPI as of Late 2022 Releases
     default: "https://releases.linaro.org/components/toolchain/binaries/latest-7/arm-linux-gnueabihf/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz"
-  sysroot-image:
+  sysrootImage:
     description: "SYSROOT XY compressed .img with Second Partition Being Linux Filesystem"
     required: false
     default: ""
-  sysroot-location:
+  sysrootLocation:
     description: "Directory to place sysroot within"
     required: false
     default: /tmp/rpi-sysroot
@@ -24,15 +24,15 @@ runs:
       wget -qO- ${{ inputs.toolchain }} | tar -xf -C ${RPI_TOOLCHAIN_DIR} --strip-components 1
     shell: bash
   - name: "Download and Extract SYSROOT Image as XZ"
-    if: ${{ inputs.sysroot-image != "" }}
+    if: ${{ inputs.sysrootImage != "" }}
     run: |
-      wget -qO- ${{ inputs.sysroot-image }}
-      unxz "$(basename ${{ inputs.sysroot-image }})"
+      wget -qO- ${{ inputs.sysrootImage }}
+      unxz "$(basename ${{ inputs.sysrootImage }})"
     shell: bash
   - name: "Mount Second Partition Image as Loopback"
-    if: ${{ inputs.sysroot-image != "" }}
+    if: ${{ inputs.sysrootImage != "" }}
     run: |
-      mkdir ${{ inputs.sysroot-location }}
-      LOOP_BACK_DEVICE="$(sudo losetup -Pr --show -f $(basename ${{ inputs.sysroot-image }} .xz))"
-      sudo mount "${LOOP_BACK_DEVICE}p2" "${{ inputs.sysroot-location }}"
+      mkdir ${{ inputs.sysrootLocation }}
+      LOOP_BACK_DEVICE="$(sudo losetup -Pr --show -f $(basename ${{ inputs.sysrootImage }} .xz))"
+      sudo mount "${LOOP_BACK_DEVICE}p2" "${{ inputs.sysrootLocation }}"
     shell: bash
