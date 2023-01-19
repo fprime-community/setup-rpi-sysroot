@@ -1,30 +1,38 @@
-name: 'fprime-setup-rpi-sysroot'
-description: 'Setup RPI sysroot for use with F´'
+name: 'fprime-setup-rpi-build'
+description: 'Setup RPI build for use with F´'
 author: 'F´'
 inputs:
-  location:
+  toolchain:
+    description: "Toolchain to download and unpack to RPI_TOOLCHAIN_DIR"
+    required: true
+    # Linaro 7.5 is Reliable for RPI as of Late 2022 Releases
+    default: "https://releases.linaro.org/components/toolchain/binaries/latest-7/arm-linux-gnueabihf/gcc-linaro-7.5.0-2019.12-x86_64_arm-linux-gnueabihf.tar.xz"
+  sysroot-image:
+    description: "SYSROOT XY compressed .img with Second Partition Being Linux Filesystem"
+    required: false
+    default: ""
+  sysroot-location:
     description: "Directory to place sysroot within"
-    required: true
+    required: false
     default: /tmp/rpi-sysroot
-  image:
-    description: "Image to download"
-    required: true
-    default: "https://downloads.raspberrypi.org/raspios_lite_armhf/images/raspios_lite_armhf-2022-09-26/2022-09-22-raspios-bullseye-armhf-lite.img.xz"
 runs:
   using: "composite"
   steps:
-  - name: "Download and Extract RPI Image"
+  - name: "Download and Extract to RPI_TOOLCHAIN_DIR"
     run: |
-      wget -q ${{ inputs.image }}
+      mkdir -p ${RPI_TOOLCHAIN_DIR} 
+      wget -qO- ${{ inputs.toolchain } | tar -xf -C ${RPI_TOOLCHAIN_DIR} --strip-components 1
+    shell: bash
+  - name: "Download and Extract SYSROOT Image as XZ"
+    if: ${{ inputs.sysroot-image != "" }}
+    run: |
+      wget -qO- ${{ inputs.image }}
       unxz "$(basename ${{ inputs.image }})"
     shell: bash
   - name: "Mount Second Partition Image as Loopback"
+    if: ${{ inputs.sysroot-image != "" }}
     run: |
       mkdir ${{ inputs.location }}
       LOOP_BACK_DEVICE="$(sudo losetup -Pr --show -f $(basename ${{ inputs.image }} .xz))"
       sudo mount "${LOOP_BACK_DEVICE}p2" "${{ inputs.location }}"
-    shell: bash
-  - name: "List SYSROOT Contents"
-    run: |
-      ls "${{ inputs.location }}"
     shell: bash
