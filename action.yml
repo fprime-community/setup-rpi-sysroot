@@ -24,13 +24,13 @@ runs:
       wget -qO- ${{ inputs.toolchain }} | tar -xf -C ${RPI_TOOLCHAIN_DIR} --strip-components 1
     shell: bash
   - name: "Download and Extract SYSROOT Image as XZ"
-    if: ${{ inputs.sysrootImage != "" }}
+    if: ${{ inputs.sysrootImage != '' }}
     run: |
       wget -qO- ${{ inputs.sysrootImage }}
       unxz "$(basename ${{ inputs.sysrootImage }})"
     shell: bash
   - name: "Mount Second Partition Image as Loopback"
-    if: ${{ inputs.sysrootImage != "" }}
+    if: ${{ inputs.sysrootImage != '' }}
     run: |
       mkdir ${{ inputs.sysrootLocation }}
       LOOP_BACK_DEVICE="$(sudo losetup -Pr --show -f $(basename ${{ inputs.sysrootImage }} .xz))"
